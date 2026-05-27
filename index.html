@@ -837,39 +837,7 @@ function renderSensors(){
 function exportPDF(){
   const{score}=riskScore(S.temp,S.hum,S.wind,S.zone);
   const now=new Date();
-  const report=`INFRAGUARD AI — GLOBAL INFRASTRUCTURE RISK REPORT
-Generated: ${now.toLocaleString()}
-================================================
-
-CURRENT CONDITIONS
-Temperature:  ${S.temp}°C
-Humidity:     ${S.hum}%
-Wind speed:   ${S.wind} km/h
-Climate zone: ${ZONES[S.zone].label}
-Infrastructure: ${S.infra.toUpperCase()}
-
-RISK ASSESSMENT
-Overall risk score: ${score}/100
-Risk level:         ${rLbl(score)}
-Urgency:           ${score>=70?'Immediate':score>=50?'High':score>=30?'Moderate':'Routine'}
-Next inspection:   ${score>=70?7:score>=50?14:score>=30?30:90} days
-
-ZONE DESCRIPTION
-${ZONES[S.zone].desc}
-
-AI RECOMMENDATIONS
-${INFRA[S.infra].sol.map((x,i)=>`${i+1}. ${x.t}: ${x.v}`).join('\n')}
-
-MAINTENANCE SCHEDULE
-${INFRA[S.infra].sched.map(x=>`• ${x.l}: every ${x.d} days`).join('\n')}
-
-RECOMMENDED MATERIALS
-${INFRA[S.infra].mat.map(x=>`• ${x}`).join('\n')}
-
-================================================
-InfraGuard AI v3.0 — Global Edition
-Powered by Open-Meteo live weather data
-`;
+  const report=`INFRAGUARD AI — GLOBAL INFRASTRUCTURE RISK REPORT\nGenerated: ${now.toLocaleString()}\n================================================\n\nCURRENT CONDITIONS\nTemperature:  ${S.temp}°C\nHumidity:     ${S.hum}%\nWind speed:   ${S.wind} km/h\nClimate zone: ${ZONES[S.zone].label}\nInfrastructure: ${S.infra.toUpperCase()}\n\nRISK ASSESSMENT\nOverall risk score: ${score}/100\nRisk level:         ${rLbl(score)}\nUrgency:           ${score>=70?'Immediate':score>=50?'High':score>=30?'Moderate':'Routine'}\nNext inspection:   ${score>=70?7:score>=50?14:score>=30?30:90} days\n\nZONE DESCRIPTION\n${ZONES[S.zone].desc}\n\nAI RECOMMENDATIONS\n${INFRA[S.infra].sol.map((x,i)=>`${i+1}. ${x.t}: ${x.v}`).join('\n')}\n\nMAINTENANCE SCHEDULE\n${INFRA[S.infra].sched.map(x=>`• ${x.l}: every ${x.d} days`).join('\n')}\n\nRECOMMENDED MATERIALS\n${INFRA[S.infra].mat.map(x=>`• ${x}`).join('\n')}\n\n================================================\nInfraGuard AI v3.0 — Global Edition\nPowered by Open-Meteo live weather data\n`;
   const blob=new Blob([report],{type:'text/plain'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`InfraGuard_Report_${S.zone}_${now.toISOString().slice(0,10)}.txt`;a.click();
 }
